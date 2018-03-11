@@ -71,8 +71,7 @@ L
 // Our AJAX call retrieves our earthquake geoJSON data.
 d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson", function(data) {
 
-  // This function returns the style data for each of the earthquakes we plot on
-  // the map.
+  // This function returns the style data for each of the earthquakes we plot on the map.
   function styleInfo(feature) {
     return {
       opacity: 1,
@@ -121,10 +120,12 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
     },
     // We set the style for each circleMarker using our styleInfo function.
     style: styleInfo,
-    // We create a popup for each marker to display the magnitude and location of
+    // We create a popup for each marker to display the magnitude, location and time  of
     // the earthquake after the marker has been created and styled
     onEachFeature: function(feature, layer) {
-      layer.bindPopup("Magnitude: " + feature.properties.mag + "<br>Location: " + feature.properties.place);
+      var dateTime = new Date(feature.properties.time);
+      var eqTime = dateTime.toISOString();
+      layer.bindPopup("Magnitude of the eathquake: " + feature.properties.mag + "<br>Location: " + feature.properties.place + "<br> Date: "+ eqTime.slice(0,10) + " @ " + eqTime.slice(11,16) );
     }
     // We add the data to the earthquake layer instead of directly to the map.
   }).addTo(earthquakes);
